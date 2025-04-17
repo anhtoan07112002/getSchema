@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>GetScheme - Trang chủ</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">GetScheme</a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" th:href="@{/login}">Đăng nhập</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="jumbotron">
+            <h1 class="display-4">Chào mừng đến với GetScheme</h1>
+            <p class="lead">Công cụ quản lý và kết nối cơ sở dữ liệu mạnh mẽ</p>
+            <hr class="my-4">
+            <p>Đăng nhập để bắt đầu sử dụng các tính năng của hệ thống</p>
+            <a class="btn btn-primary btn-lg" th:href="@{/login}" role="button">Đăng nhập</a>
+        </div>
+    </div>
+</body>
+</html> 
