@@ -6,6 +6,7 @@ import com.flowiseai.getscheme.model.TableSchema;
 import com.flowiseai.getscheme.model.TableRelationship;
 import com.flowiseai.getscheme.service.DatabaseConnectionService;
 import com.flowiseai.getscheme.service.DatabaseSchemaService;
+import com.flowiseai.getscheme.service.DatabaseSchemaServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +19,13 @@ import java.util.Map;
 public class DatabaseConnectionController {
 
     private final DatabaseConnectionService connectionService;
-    private final DatabaseSchemaService schemaService;
+    private final DatabaseSchemaServiceFactory schemaServiceFactory;
 
     @Autowired
     public DatabaseConnectionController(DatabaseConnectionService connectionService, 
-                                      DatabaseSchemaService schemaService) {
+                                      DatabaseSchemaServiceFactory schemaServiceFactory) {
         this.connectionService = connectionService;
-        this.schemaService = schemaService;
+        this.schemaServiceFactory = schemaServiceFactory;
     }
 
     @GetMapping("/api")
@@ -52,6 +53,9 @@ public class DatabaseConnectionController {
             model.addAttribute("error", "Vui lòng chọn ít nhất một bảng");
             return "connection-result";
         }
+
+        // Lấy service phù hợp từ factory
+        DatabaseSchemaService schemaService = schemaServiceFactory.getService(connectionInfo);
 
         // Lấy thông tin schema và mối quan hệ
         List<TableSchema> tableSchemas = schemaService.getTableSchemas(connectionInfo, selectedTables);

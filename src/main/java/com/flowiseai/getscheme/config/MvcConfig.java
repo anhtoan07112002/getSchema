@@ -1,5 +1,7 @@
 package com.flowiseai.getscheme.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -12,9 +14,11 @@ import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
+    private static final Logger logger = LoggerFactory.getLogger(MvcConfig.class);
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        logger.info("Configuring view controllers");
         registry.addViewController("/").setViewName("home");
         registry.addViewController("/home").setViewName("home");
         registry.addViewController("/login").setViewName("login");
@@ -25,6 +29,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        logger.info("Configuring resource handlers");
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/css/**")
@@ -37,6 +42,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
+        logger.info("Creating template resolver");
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setPrefix("classpath:/templates/");
         templateResolver.setSuffix(".html");
@@ -48,6 +54,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Bean
     public SpringTemplateEngine templateEngine() {
+        logger.info("Creating template engine");
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setEnableSpringELCompiler(true);
@@ -56,6 +63,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Bean
     public ThymeleafViewResolver viewResolver() {
+        logger.info("Creating view resolver");
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding("UTF-8");
