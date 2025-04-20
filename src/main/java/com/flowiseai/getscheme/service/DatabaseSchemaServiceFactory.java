@@ -40,9 +40,9 @@ public class DatabaseSchemaServiceFactory {
             case SQLSERVER:
                 logger.debug("Returning SQL Server schema service");
                 return sqlServerSchemaService;
-            case ORACLE:
-                logger.error("Oracle is not supported yet");
-                throw new UnsupportedOperationException("Oracle is not supported yet");
+            // case ORACLE:
+            //     logger.error("Oracle is not supported yet");
+            //     throw new UnsupportedOperationException("Oracle is not supported yet");
             default:
                 logger.error("Unsupported database type: {}", dbType);
                 throw new IllegalArgumentException("Unsupported database type: " + dbType);

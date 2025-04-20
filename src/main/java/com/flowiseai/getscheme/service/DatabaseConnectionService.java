@@ -92,7 +92,7 @@ public class DatabaseConnectionService {
                         tableInfo.setTableName(tableName);
                         break;
                     case MYSQL:
-                    case ORACLE:
+                    // case ORACLE:
                     default:
                         // MySQL và Oracle: chỉ lưu tên bảng
                         tableInfo.setTableName(tableName);

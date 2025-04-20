@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 public enum DatabaseType {
     MYSQL("MySQL", "mysql"),
     POSTGRESQL("PostgreSQL", "postgresql"),
-    SQLSERVER("SQL Server", "sqlserver"),
-    ORACLE("Oracle", "oracle");
+    SQLSERVER("SQL Server", "sqlserver");
+    // ORACLE("Oracle", "oracle"); // Oracle is not supported yet
 
     private static final Logger logger = LoggerFactory.getLogger(DatabaseType.class);
     private final String displayName;
