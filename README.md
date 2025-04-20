@@ -7,7 +7,6 @@ GetScheme là một ứng dụng web giúp kết nối và quản lý cơ sở d
 - Kết nối với nhiều loại database:
   - MySQL
   - PostgreSQL
-  - SQL Server
 - Xem thông tin schema
 - Tạo schema markdown
 - Tương tác với AI để hỏi về schema
