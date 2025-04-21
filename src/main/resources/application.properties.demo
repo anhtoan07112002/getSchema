@@ -1,0 +1,38 @@
+# Application
+spring.application.name=getscheme
+server.port=8080
+
+# Thymeleaf
+spring.thymeleaf.cache=false
+spring.thymeleaf.mode=HTML
+spring.thymeleaf.encoding=UTF-8
+spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+spring.thymeleaf.enabled=true
+spring.thymeleaf.check-template=true
+spring.thymeleaf.check-template-location=true
+
+# Logging
+logging.level.org.springframework.security=DEBUG
+logging.level.org.springframework.web=DEBUG
+logging.level.org.thymeleaf=DEBUG
+logging.level.root=INFO
+logging.level.com.flowiseai.getscheme=DEBUG
+logging.level.com.flowiseai.getscheme.sqlserver=DEBUG
+logging.level.org.springframework.jdbc=DEBUG
+logging.level.com.microsoft.sqlserver.jdbc=DEBUG
+
+# Security Debug
+logging.level.org.springframework.security.web.FilterChainProxy=DEBUG
+
+# Disable warning for default Datasource
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+# SQL Server connection logging
+logging.level.org.springframework.jdbc.core.JdbcTemplate=DEBUG
+logging.level.org.springframework.jdbc.datasource.DataSourceUtils=DEBUG
+
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+
+# Chatbot Configuration
+chatbot.url=http://localhost:3000/chatbot/your-chatbot-id 

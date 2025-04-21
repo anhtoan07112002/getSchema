@@ -121,7 +121,7 @@
             </div>
             <div class="card-body" id="chatbotContainer" style="display: none;">
                 <iframe id="chatbotFrame" 
-                        src="http://127.0.0.1:3000/chatbot/12c43f2a-ac7c-4db4-8584-685c99e3c525" 
+                        th:src="${@chatbotConfig.getChatbotUrl()}"
                         style="width: 100%; height: 500px; border: none;"></iframe>
             </div>
         </div>
