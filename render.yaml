@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: getscheme
+    env: java
+    buildCommand: ./mvnw clean package
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
+      - key: JAVA_VERSION
+        value: 17
+      - key: PORT
+        value: 8080
+      - key: CHATBOT_URL
+        value: ${CHATBOT_URL} 
