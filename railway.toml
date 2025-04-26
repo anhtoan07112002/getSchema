@@ -12,5 +12,4 @@ startTimeout = 120
 
 [deploy.variables]
 SPRING_PROFILES_ACTIVE = "production"
-CHATBOT_URL = "http://localhost:3000/chatbot/default"
 ADMIN_PASSWORD = "admin"
