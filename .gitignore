@@ -34,3 +34,9 @@ build/
 
 ### config file ###
 application.properties
+
+# Configuration files
+src/main/resources/application.properties
+src/main/resources/application.properties.demo
+src/main/resources/application-*.properties
+!src/main/resources/application-production.properties
