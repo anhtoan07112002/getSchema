@@ -1,10 +1,16 @@
 [build]
 builder = "nixpacks"
-buildCommand = "chmod +x ./mvnw && ./mvnw clean package -DskipTests"
+buildCommand = "chmod +x ./mvnw && ./mvnw clean package -DskipTests -Dmaven.repo.local=/app/.m2/repository"
 
 [deploy]
 startCommand = "java -jar target/*.jar"
-healthcheckPath = "/"
-healthcheckTimeout = 100
+healthcheckPath = "/actuator/health"
+healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
+startTimeout = 120
+
+[deploy.variables]
+SPRING_PROFILES_ACTIVE = "production"
+CHATBOT_URL = "http://localhost:3000/chatbot/default"
+ADMIN_PASSWORD = "admin"
