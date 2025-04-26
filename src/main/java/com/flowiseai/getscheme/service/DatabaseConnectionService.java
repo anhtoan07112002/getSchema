@@ -2,6 +2,7 @@ package com.flowiseai.getscheme.service;
 
 import com.flowiseai.getscheme.model.ConnectionResult;
 import com.flowiseai.getscheme.model.DatabaseConnectionInfo;
+import com.flowiseai.getscheme.model.DatabaseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,7 +34,7 @@ public class DatabaseConnectionService {
             logger.info("Connection test successful");
 
             // Lấy danh sách bảng
-            List<ConnectionResult.TableInfo> tableInfos = getTableNames(dataSource);
+            List<ConnectionResult.TableInfo> tableInfos = getTableNames(dataSource, connectionInfo.getDatabaseTypeEnum());
             logger.debug("Retrieved {} tables", tableInfos.size());
             
             logger.debug("Retrieving database info");
@@ -42,15 +43,15 @@ public class DatabaseConnectionService {
 
             return new ConnectionResult(
                     true,
-                    "Kết nối thành công đến database " + connectionInfo.getDatabaseName(),
+                    "Successfully connected to database " + connectionInfo.getDatabaseName(),
                     tableInfos,
                     databaseInfo
             );
         } catch (Exception e) {
             logger.error("Error connecting to database: {}", e.getMessage(), e);
-            String errorMessage = "Không thể kết nối đến database: " + e.getMessage();
+            String errorMessage = "Cannot connect to database: " + e.getMessage();
             if (e.getCause() != null) {
-                errorMessage += " - Nguyên nhân: " + e.getCause().getMessage();
+                errorMessage += " - Cause: " + e.getCause().getMessage();
             }
             return new ConnectionResult(
                     false,
@@ -71,17 +72,35 @@ public class DatabaseConnectionService {
         return dataSource;
     }
 
-    private List<ConnectionResult.TableInfo> getTableNames(DataSource dataSource) throws SQLException {
-        logger.debug("Retrieving table names from database");
+    private List<ConnectionResult.TableInfo> getTableNames(DataSource dataSource, DatabaseType dbType) throws SQLException {
         List<ConnectionResult.TableInfo> tableInfos = new ArrayList<>();
         try (ResultSet rs = dataSource.getConnection().getMetaData().getTables(
                 null, null, "%", new String[]{"TABLE"})) {
             while (rs.next()) {
                 ConnectionResult.TableInfo tableInfo = new ConnectionResult.TableInfo();
-                tableInfo.setTableName(rs.getString("TABLE_NAME"));
-                tableInfo.setSelected(false); // Mặc định không chọn
+                String schema = rs.getString("TABLE_SCHEM");
+                String tableName = rs.getString("TABLE_NAME");
+                
+                // Xử lý tên bảng theo loại database
+                switch (dbType) {
+                    case SQLSERVER:
+                        // SQL Server: lưu dạng schema.tableName
+                        tableInfo.setTableName(schema != null ? schema + "." + tableName : "dbo." + tableName);
+                        break;
+                    case POSTGRESQL:
+                        // PostgreSQL: chỉ lưu tên bảng, schema được xử lý trong service
+                        tableInfo.setTableName(tableName);
+                        break;
+                    case MYSQL:
+                    // case ORACLE:
+                    default:
+                        // MySQL và Oracle: chỉ lưu tên bảng
+                        tableInfo.setTableName(tableName);
+                        break;
+                }
+                
+                tableInfo.setSelected(false);
                 tableInfos.add(tableInfo);
-                logger.trace("Found table: {}", tableInfo.getTableName());
             }
         }
         return tableInfos;

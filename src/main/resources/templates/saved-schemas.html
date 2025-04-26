@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Schema đã lưu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .schema-card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/dashboard}">
+                <i class="fas fa-database mr-2"></i>GetScheme
+            </a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-link text-white">Đăng xuất</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mb-4">Danh sách Schema đã lưu</h1>
+
+        <div th:if="${savedSchemas.empty}">
+            <div class="alert alert-info">
+                Chưa có schema nào được lưu.
+            </div>
+        </div>
+
+        <div th:each="schema : ${savedSchemas}" class="card schema-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 th:text="${schema.schemaName}"></h5>
+                <div>
+                    <a th:href="@{/api/schema/{id}(id=${schema.id})}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-eye mr-2"></i>Xem
+                    </a>
+                    <button class="btn btn-danger btn-sm" onclick="deleteSchema('${schema.id}')">
+                        <i class="fas fa-trash mr-2"></i>Xóa
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <p><strong>Database:</strong> <span th:text="${schema.connectionInfo.databaseName}"></span></p>
+                <p><strong>Loại Database:</strong> <span th:text="${schema.connectionInfo.databaseType}"></span></p>
+                <p><strong>Ngày tạo:</strong> <span th:text="${#temporals.format(schema.createdAt, 'dd/MM/yyyy HH:mm')}"></span></p>
+                <p><strong>Số bảng:</strong> <span th:text="${schema.selectedTables.size()}"></span></p>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a th:href="@{/dashboard}" class="btn btn-primary mr-2">
+                <i class="fas fa-arrow-left mr-2"></i>Quay lại Dashboard
+            </a>
+            <a th:href="@{/api}" class="btn btn-secondary">
+                <i class="fas fa-plug mr-2"></i>Kết nối Database mới
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        async function deleteSchema(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa schema này?')) {
+                try {
+                    const response = await fetch(`/api/schema/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('Có lỗi xảy ra khi xóa schema');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa schema');
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,10 @@
+[build]
+builder = "nixpacks"
+buildCommand = "./mvnw clean package"
+
+[deploy]
+startCommand = "java -jar target/*.jar"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10 

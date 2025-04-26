@@ -34,4 +34,3 @@ build/
 
 ### config file ###
 application.properties
-DatabaseConnectionInfo.java

@@ -10,10 +10,18 @@
             padding: 20px;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
         }
         .table-checkbox {
             margin-right: 10px;
+        }
+        .table-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .card-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid rgba(0,0,0,.125);
         }
     </style>
 </head>
@@ -23,22 +31,10 @@
             <a class="navbar-brand" th:href="@{/dashboard}">
                 <i class="fas fa-database mr-2"></i>GetScheme
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/api}">Kết nối Database</a>
-                    </li>
-                </ul>
-                <form th:action="@{/logout}" method="post" class="form-inline">
-                    <button type="submit" class="btn btn-outline-light">
-                        <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất
-                    </button>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-link text-white">Đăng xuất</button>
                 </form>
             </div>
         </div>
@@ -63,22 +59,6 @@
                     <p><strong>Port:</strong> <span th:text="${connectionInfo.port}"></span></p>
                     <p><strong>Tên Database:</strong> <span th:text="${connectionInfo.databaseName}"></span></p>
                     <p><strong>Schema:</strong> <span th:text="${connectionInfo.schema}"></span></p>
-                    <p><strong>URL Kết nối:</strong> <span th:text="${connectionInfo.getUrl()}"></span></p>
-                </div>
-            </div>
-
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5>Thông tin Database</h5>
-                </div>
-                <div class="card-body">
-                    <div th:each="info : ${result.databaseInfo}">
-                        <ul class="list-group">
-                            <li class="list-group-item" th:each="entry : ${info}">
-                                <strong th:text="${entry.key}"></strong>: <span th:text="${entry.value}"></span>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
 
@@ -104,29 +84,38 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div th:if="${result.tableInfos != null and !result.tableInfos.empty}">
-                            <div class="list-group">
-                                <div class="list-group-item" th:each="tableInfo : ${result.tableInfos}">
-                                    <div class="form-check">
-                                        <input class="form-check-input table-checkbox" type="checkbox" 
-                                               th:id="'table_' + ${tableInfo.tableName}"
-                                               th:name="selectedTables"
-                                               th:value="${tableInfo.tableName}"
-                                               th:checked="${tableInfo.selected}">
-                                        <label class="form-check-label" th:for="'table_' + ${tableInfo.tableName}"
-                                               th:text="${tableInfo.tableName}"></label>
+                        <div class="table-list">
+                            <div th:if="${result.tableInfos != null and !result.tableInfos.empty}">
+                                <div class="list-group">
+                                    <div class="list-group-item" th:each="tableInfo : ${result.tableInfos}">
+                                        <div class="form-check">
+                                            <input class="form-check-input table-checkbox" type="checkbox" 
+                                                   th:id="'table_' + ${tableInfo.tableName}"
+                                                   th:name="selectedTables"
+                                                   th:value="${tableInfo.tableName}"
+                                                   th:checked="${tableInfo.selected}">
+                                            <label class="form-check-label" th:for="'table_' + ${tableInfo.tableName}"
+                                                   th:text="${tableInfo.tableName}"></label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div th:if="${result.tableInfos == null or result.tableInfos.empty}">
-                            <p>Không có bảng nào trong database này.</p>
+                            <div th:if="${result.tableInfos == null or result.tableInfos.empty}">
+                                <p>Không có bảng nào trong database này.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save mr-2"></i>Lưu lựa chọn
-                        </button>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted">
+                                <span id="selectedCount">0</span> bảng đã được chọn
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary" formaction="/select-tables">
+                                    <i class="fas fa-save mr-2"></i>Xác nhận và xem Schema
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -151,13 +140,28 @@
             document.querySelectorAll('.table-checkbox').forEach(checkbox => {
                 checkbox.checked = true;
             });
+            updateSelectedCount();
         }
 
         function deselectAllTables() {
             document.querySelectorAll('.table-checkbox').forEach(checkbox => {
                 checkbox.checked = false;
             });
+            updateSelectedCount();
         }
+
+        function updateSelectedCount() {
+            const count = document.querySelectorAll('.table-checkbox:checked').length;
+            document.getElementById('selectedCount').textContent = count;
+        }
+
+        // Cập nhật số lượng bảng đã chọn khi trang được tải
+        document.addEventListener('DOMContentLoaded', updateSelectedCount);
+
+        // Cập nhật số lượng bảng đã chọn khi có thay đổi
+        document.querySelectorAll('.table-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedCount);
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Xem Schema</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .markdown-content {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/dashboard}">
+                <i class="fas fa-database mr-2"></i>GetScheme
+            </a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-link text-white">Đăng xuất</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mb-4" th:text="${schemaName}"></h1>
+
+        <!-- Thông tin kết nối -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Thông tin kết nối</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Loại Database:</strong> <span th:text="${connectionInfo.databaseType}"></span></p>
+                <p><strong>Host:</strong> <span th:text="${connectionInfo.host}"></span></p>
+                <p><strong>Port:</strong> <span th:text="${connectionInfo.port}"></span></p>
+                <p><strong>Tên Database:</strong> <span th:text="${connectionInfo.databaseName}"></span></p>
+                <p><strong>Schema:</strong> <span th:text="${connectionInfo.schema}"></span></p>
+            </div>
+        </div>
+
+        <!-- Nội dung Markdown -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Nội dung Schema</h5>
+            </div>
+            <div class="card-body">
+                <div class="markdown-content" th:text="${markdownContent}"></div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a th:href="@{/saved-schemas}" class="btn btn-primary mr-2">
+                <i class="fas fa-arrow-left mr-2"></i>Quay lại danh sách
+            </a>
+            <a th:href="@{/api}" class="btn btn-secondary">
+                <i class="fas fa-plug mr-2"></i>Kết nối Database mới
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> 
