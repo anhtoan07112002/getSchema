@@ -5,10 +5,10 @@ buildCommand = "chmod +x ./mvnw && ./mvnw clean package -DskipTests -Dmaven.repo
 [deploy]
 startCommand = "java -jar target/*.jar"
 healthcheckPath = "/actuator/health"
-healthcheckTimeout = 300
+healthcheckTimeout = 600
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
-startTimeout = 120
+startTimeout = 180
 
 [deploy.variables]
 SPRING_PROFILES_ACTIVE = "production"
