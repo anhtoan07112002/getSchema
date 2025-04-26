@@ -5,12 +5,13 @@ buildCommand = "chmod +x ./mvnw && ./mvnw clean package -DskipTests -Dmaven.repo
 [deploy]
 startCommand = "java -jar target/*.jar"
 healthcheckPath = "/actuator/health/liveness"
-healthcheckTimeout = 30
+healthcheckTimeout = 60
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
-startTimeout = 180
+startTimeout = 300
 
 [deploy.variables]
 SPRING_PROFILES_ACTIVE = "production"
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin"
+CHATBOT_ENABLED = "false"
