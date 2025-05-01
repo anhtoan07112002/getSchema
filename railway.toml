@@ -5,7 +5,7 @@ buildCommand = "chmod +x ./mvnw && ./mvnw clean package -DskipTests -Dmaven.repo
 [deploy]
 startCommand = "java -jar target/*.jar"
 healthcheckPath = "/actuator/health/liveness"
-healthcheckTimeout = 60
+healthcheckTimeout = 120
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
 startTimeout = 300

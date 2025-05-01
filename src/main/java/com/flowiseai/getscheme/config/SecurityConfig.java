@@ -29,7 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**",
                                 "/login", "/login.html", "/api", "/api/**", "/connect", 
                                 "/api/sqlserver/**", "/api/query/**", "/api/auth/register",
-                                "/actuator/health", "/actuator/info", "/actuator/health/**").permitAll()
+                                "/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
