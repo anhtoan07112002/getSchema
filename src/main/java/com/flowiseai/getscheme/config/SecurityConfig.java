@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**",
                                 "/login", "/login.html", "/api", "/api/**", "/connect", 
-                                "/api/sqlserver/**", "/api/query/**",
+                                "/api/sqlserver/**", "/api/query/**", "/api/auth/register",
                                 "/actuator/health", "/actuator/info", "/actuator/health/**").permitAll()
                         .anyRequest().authenticated()
                 )
