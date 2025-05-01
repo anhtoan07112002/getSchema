@@ -3,7 +3,7 @@ builder = "nixpacks"
 buildCommand = "chmod +x ./mvnw && ./mvnw clean package -DskipTests -Dmaven.repo.local=/app/.m2/repository"
 
 [deploy]
-startCommand = "java -Xmx512m -XX:+UseSerialGC -jar target/*.jar"
+startCommand = "java -jar target/*.jar"
 healthcheckPath = "/actuator/health/liveness"
 healthcheckTimeout = 120
 restartPolicyType = "on_failure"
