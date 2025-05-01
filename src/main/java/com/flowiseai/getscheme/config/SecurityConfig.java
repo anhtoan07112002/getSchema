@@ -24,12 +24,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         logger.info("Configuring security filter chain");
         http
-                .csrf(csrf -> csrf.disable()) // Temporarily disable CSRF for testing
+                .cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**",
                                 "/login", "/login.html", "/api", "/api/**", "/connect", 
                                 "/api/sqlserver/**", "/api/query/**", "/api/auth/register",
-                                "/actuator/**").permitAll()
+                                "/actuator/**", "/actuator", "/actuator/health", 
+                                "/actuator/health/liveness", "/actuator/health/readiness").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

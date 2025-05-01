@@ -16,7 +16,25 @@ public class ActuatorConfig {
         logger.info("Registering ping health indicator");
         return () -> {
             logger.debug("Ping health check called");
-            return Health.up().build();
+            return Health.up().withDetail("status", "OK").build();
+        };
+    }
+    
+    @Bean
+    public HealthIndicator livenessHealthIndicator() {
+        logger.info("Registering liveness health indicator");
+        return () -> {
+            logger.debug("Liveness health check called");
+            return Health.up().withDetail("status", "UP").build();
+        };
+    }
+    
+    @Bean
+    public HealthIndicator readinessHealthIndicator() {
+        logger.info("Registering readiness health indicator");
+        return () -> {
+            logger.debug("Readiness health check called");
+            return Health.up().withDetail("status", "READY").build();
         };
     }
 } 
