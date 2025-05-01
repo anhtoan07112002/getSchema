@@ -165,6 +165,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${project.parent.version}</version>
+				<configuration>
+					<finalName>getscheme</finalName>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
